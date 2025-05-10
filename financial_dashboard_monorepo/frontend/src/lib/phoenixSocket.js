@@ -1,9 +1,7 @@
 // place files you want to import through the `$lib` alias in this folder.
 import { Socket } from 'phoenix';
-import { writable } from 'svelte/store';
-
-export const connectionStatus = writable('disconnected'); // 'connecting', 'connected', 'error', 'closed'
-export const lastPong = writable(null);
+// Import stores from the dedicated store file
+import { stocks, connectionStatus, lastPong } from '../stores/stockStore.js';
 
 let socket;
 let channel;
@@ -61,6 +59,48 @@ function joinStockChannel() {
   channel.on('pong', payload => {
     console.log('Received pong:', payload);
     lastPong.set(payload);
+  });
+
+  // Listen for initial stock data
+  channel.on('initial_stocks', payload => {
+    console.log('Received initial_stocks:', payload);
+    const initialStockData = {};
+    if (payload.stocks && Array.isArray(payload.stocks)) {
+      payload.stocks.forEach(stock => {
+        initialStockData[stock.symbol] = {
+          ...stock,
+          // Initialize history with the current price or an empty array if no price
+          history: stock.price ? [stock.price] : []
+        };
+      });
+      stocks.set(initialStockData);
+    } else {
+      console.warn("Received 'initial_stocks' but payload.stocks was not an array or undefined:", payload);
+      stocks.set({}); // Set to empty if data is malformed
+    }
+  });
+
+  // Listen for real-time stock updates
+  channel.on('stock_update', payload => {
+    // console.log('Received stock_update:', payload); // Can be very verbose
+    stocks.update(currentStocks => {
+      const symbol = payload.symbol;
+      if (!symbol) {
+        console.warn("Received 'stock_update' without a symbol:", payload);
+        return currentStocks;
+      }
+      const existingStock = currentStocks[symbol] || { history: [] };
+      const newHistory = [...existingStock.history, payload.price].slice(-50); // Keep last 50 points
+
+      return {
+        ...currentStocks,
+        [symbol]: {
+          ...existingStock, // Keep any other properties not in payload
+          ...payload,       // Update with new data from payload
+          history: newHistory,
+        }
+      };
+    });
   });
 }
 

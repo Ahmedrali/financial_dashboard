@@ -13,6 +13,8 @@ defmodule Dashboard.Application do
       {Phoenix.PubSub, name: Dashboard.PubSub},
       # Start the Finch HTTP client for sending emails
       {Finch, name: Dashboard.Finch},
+      # Start the StockData supervisor which handles Finnhub connection and caching
+      Dashboard.StockData.Supervisor,
       # Start a worker by calling: Dashboard.Worker.start_link(arg)
       # {Dashboard.Worker, arg},
       # Start to serve requests, typically the last entry

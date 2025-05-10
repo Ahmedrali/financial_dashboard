@@ -5,7 +5,7 @@ defmodule Dashboard.MixProject do
     [
       app: :dashboard,
       version: "0.1.0",
-      elixir: "~> 1.14",
+      elixir: "~> 1.15", # Updated as per plan
       elixirc_paths: elixirc_paths(Mix.env()),
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
@@ -41,7 +41,8 @@ defmodule Dashboard.MixProject do
       {:gettext, "~> 0.26"},
       {:jason, "~> 1.2"},
       {:dns_cluster, "~> 0.1.1"},
-      {:bandit, "~> 1.5"}
+      {:bandit, "~> 1.5"},
+      {:websockex, "~> 0.4"} # Added for Finnhub WebSocket client
     ]
   end
 

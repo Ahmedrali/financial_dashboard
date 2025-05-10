@@ -38,6 +38,15 @@ if config_env() == :prod do
 
   config :dashboard, :dns_cluster_query, System.get_env("DNS_CLUSTER_QUERY")
 
+  finnhub_api_key =
+    System.get_env("FINNHUB_API_KEY") ||
+      raise """
+      environment variable FINNHUB_API_KEY is missing.
+      This is required to connect to the Finnhub WebSocket API.
+      """
+
+  config :dashboard, :finnhub_api_key, finnhub_api_key
+
   config :dashboard, DashboardWeb.Endpoint,
     url: [host: host, port: 443, scheme: "https"],
     http: [

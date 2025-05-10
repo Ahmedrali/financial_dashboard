@@ -40,4 +40,11 @@ config :phoenix, :json_library, Jason
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
+
+# Configure Finnhub API Key
+# For development, you can set it here.
+# IMPORTANT: For production, use environment variables (see runtime.exs).
+# Consider moving this to config/dev.secret.exs and gitignoring it.
+config :dashboard, :finnhub_api_key, "d0fm00hr01qr6dbstjpgd0fm00hr01qr6dbstjq0"
+
 import_config "#{config_env()}.exs"

@@ -5,8 +5,8 @@ defmodule DashboardWeb.UserSocket do
   channel "stocks:lobby", DashboardWeb.StockChannel
 
   # Transports
-  transport :websocket, Phoenix.Transports.WebSocket
   # transport :longpoll, Phoenix.Transports.LongPoll # We can disable longpoll if only using websockets
+  # WebSocket transport is configured in the endpoint and this line is deprecated.
 
   # Connect is called when a connection is established.
   # It is often used for authentication and checking connection parameters.

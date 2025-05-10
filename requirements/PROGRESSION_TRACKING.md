@@ -55,97 +55,122 @@
 
 ### Milestone 2: API Integration (Est. Time: 6-8 hours)
 
-- [ ] **Task 2.1**: Implement Finnhub API Authentication
-    - Completed: [ ] (Date/Time: __________)
-    - Challenges:
-    - Solutions:
-    - Aider Usage:
-    - opto-gpt Usage:
-    - Learnings:
-    - Code Quality Improvements:
-    - Performance Optimizations:
+- [x] **Task 2.1**: Implement Finnhub API Authentication
+    - Completed: [x] (Date/Time: 2025-05-10)
+    - Challenges: Ensuring API key is configurable for different environments (dev vs. prod) and not hardcoded or committed.
+    - Solutions: Added `:finnhub_api_key` to `config/config.exs` for dev (with a note to use secrets/env vars) and configured `config/runtime.exs` to read `FINNHUB_API_KEY` from environment variables for production.
+    - Aider Usage: Generated config entries.
+    - opto-gpt Usage: Clarified best practices for API key management.
+    - Learnings: Standard Phoenix config patterns for secrets and runtime configuration.
+    - Code Quality Improvements: N/A
+    - Performance Optimizations: N/A
 
-- [ ] **Task 2.2**: Create `FinnhubClient` GenServer
-    - Completed: [ ] (Date/Time: __________)
-    - Challenges:
-    - Solutions:
-    - Aider Usage:
-    - opto-gpt Usage:
-    - Learnings:
-    - Code Quality Improvements:
-    - Performance Optimizations:
+- [x] **Task 2.2**: Create `FinnhubClient` GenServer
+    - Completed: [x] (Date/Time: 2025-05-10)
+    - Challenges: Structuring the GenServer state, handling WebSocket lifecycle with `websockex`, and integrating it into the application's supervision tree.
+    - Solutions: Created `Dashboard.StockData.FinnhubClient` GenServer. Implemented `init/1` to fetch API key and start connection. Created `Dashboard.StockData.Supervisor` to manage `FinnhubClient` and added this supervisor to `Dashboard.Application`.
+    - Aider Usage: Generated skeleton for GenServer, Supervisor, and Application modifications.
+    - opto-gpt Usage: Provided guidance on GenServer patterns and supervision.
+    - Learnings: GenServer callbacks, `websockex` usage for opening connections, and supervisor setup.
+    - Code Quality Improvements: Clear separation of concerns with the new supervisor.
+    - Performance Optimizations: N/A at this stage.
 
-- [ ] **Task 2.3**: Implement Basic Data Retrieval (Single Stock - AAPL)
-    - Completed: [ ] (Date/Time: __________)
-    - Challenges:
-    - Solutions:
-    - Aider Usage:
-    - opto-gpt Usage:
-    - Learnings:
-    - Code Quality Improvements:
-    - Performance Optimizations:
+- [x] **Task 2.3**: Implement Basic Data Retrieval (Single Stock - AAPL)
+    - Completed: [x] (Date/Time: 2025-05-10)
+    - Challenges: Sending the correct subscription message to Finnhub, parsing incoming JSON trade data, and extracting relevant fields.
+    - Solutions: In `FinnhubClient`, after connection, send `{"type":"subscribe","symbol":"AAPL"}`. Implemented `handle_finnhub_message` to parse JSON using `Jason`, extract price, symbol, and timestamp, log this data, and store it in ETS via `Dashboard.StockData.Cache`.
+    - Aider Usage: Provided code for message sending, JSON parsing, and ETS interaction.
+    - opto-gpt Usage: Helped clarify Finnhub message formats.
+    - Learnings: Working with `Jason` for JSON processing, structure of Finnhub trade messages.
+    - Code Quality Improvements: Specific handling for "trade" type messages.
+    - Performance Optimizations: N/A
 
-- [ ] **Task 2.4**: Implement ETS Storage for Stock Data
-    - Completed: [ ] (Date/Time: __________)
-    - Challenges:
-    - Solutions:
-    - Aider Usage:
-    - opto-gpt Usage:
-    - Learnings:
-    - Code Quality Improvements:
-    - Performance Optimizations:
+- [x] **Task 2.4**: Implement ETS Storage for Stock Data
+    - Completed: [x] (Date/Time: 2025-05-10)
+    - Challenges: Designing the ETS table structure and access functions. Ensuring ETS table is initialized correctly.
+    - Solutions: Created `Dashboard.StockData.Cache` module with `init/0` (called by `StockData.Supervisor`), `put/2`, `get/1`, and `get_all_stocks/0`. The ETS table is named `:stock_data_cache` and configured for public access with read concurrency.
+    - Aider Usage: Generated the `Dashboard.StockData.Cache` module structure.
+    - opto-gpt Usage: Advised on ETS table options (`:public`, `:named_table`, `:read_concurrency`).
+    - Learnings: ETS table creation and basic operations. Importance of initializing ETS in a supervisor.
+    - Code Quality Improvements: Centralized ETS logic in its own module.
+    - Performance Optimizations: Using `:read_concurrency` for ETS.
 
-- [ ] **Task 2.5**: Implement Error Handling & Reconnection for `FinnhubClient`
-    - Completed: [ ] (Date/Time: __________)
-    - Challenges:
-    - Solutions:
-    - Aider Usage:
-    - opto-gpt Usage:
-    - Learnings:
-    - Code Quality Improvements:
-    - Performance Optimizations:
+- [x] **Task 2.5**: Implement Error Handling & Reconnection for `FinnhubClient`
+    - Completed: [x] (Date/Time: 2025-05-10)
+    - Challenges: Detecting WebSocket disconnects/errors and implementing a robust retry mechanism.
+    - Solutions: `FinnhubClient` handles `{:socket_error, ...}` and `{:socket_closed, ...}` messages from `websockex`. Implemented `schedule_reconnect/1` which uses `Process.send_after/3` to send a `:reconnect` message to itself, with a fixed delay and max attempts.
+    - Aider Usage: Generated the error handling callbacks and reconnection logic.
+    - opto-gpt Usage: Discussed different reconnection strategies (e.g., exponential backoff, though a simpler fixed delay was implemented for now).
+    - Learnings: Handling asynchronous error notifications in a GenServer and implementing timed retries.
+    - Code Quality Improvements: Resilience to network issues for the Finnhub connection.
+    - Performance Optimizations: N/A
 
 ### Milestone 3: Data Flow (Est. Time: 5-7 hours)
 
-- [ ] **Task 3.1**: Set up Phoenix Channels for Data Broadcasting
-    - Completed: [ ] (Date/Time: __________)
-    - Challenges:
+- [x] **Task 3.1**: Set up Phoenix Channels for Data Broadcasting
+    - Completed: [x] (Date/Time: 2025-05-10)
+    - Challenges: Ensuring data is broadcast correctly from `FinnhubClient` and that `StockChannel` sends initial data upon client join. Coordinating the `WebSockex.Client` callback module with the `FinnhubClient` GenServer.
     - Solutions:
-    - Aider Usage:
-    - opto-gpt Usage:
-    - Learnings:
-    - Code Quality Improvements:
-    - Performance Optimizations:
+        - Created `Dashboard.StockData.FinnhubWebSocketClient` to handle raw WebSocket events and forward them to `FinnhubClient`.
+        - Modified `FinnhubClient` to use `DashboardWeb.Endpoint.broadcast/3` for live "stock_update" events.
+        - Updated `StockChannel`'s `join/3` to fetch all data from `Cache` and send an `:after_join` message to itself.
+        - Added `handle_info({:after_join, ...}, socket)` in `StockChannel` to push "initial_stocks" to the client.
+    - Aider Usage: Generated the `FinnhubWebSocketClient` module, modifications for `FinnhubClient` broadcasting, and `StockChannel` updates.
+    - opto-gpt Usage: Clarified the role of the `WebSockex.Client` callback module and its interaction with the parent GenServer.
+    - Learnings: Implementing `WebSockex.Client` behaviour, broadcasting Phoenix Channel events from a GenServer, and sending initial state to clients upon channel join.
+    - Code Quality Improvements: Better separation of concerns for WebSocket handling.
+    - Performance Optimizations: N/A
+    - Aider Usage: Generated the `FinnhubWebSocketClient` module, modifications for `FinnhubClient` broadcasting, and `StockChannel` updates.
+    - opto-gpt Usage: Clarified the role of the `WebSockex.Client` callback module and its interaction with the parent GenServer.
+    - Learnings: Implementing `WebSockex.Client` behaviour, broadcasting Phoenix Channel events from a GenServer, and sending initial state to clients upon channel join.
+    - Code Quality Improvements: Better separation of concerns for WebSocket handling.
+    - Performance Optimizations: N/A
 
-- [ ] **Task 3.2**: Create Data Transformation Utilities (if needed)
-    - Completed: [ ] (Date/Time: __________)
-    - Challenges:
+- [x] **Task 3.2**: Create Data Transformation Utilities (if needed)
+    - Completed: [x] (Date/Time: 2025-05-10)
+    - Challenges: Determining how to calculate `daily_change_percent` and `previous_close` without an external daily data API.
     - Solutions:
-    - Aider Usage:
-    - opto-gpt Usage:
-    - Learnings:
-    - Code Quality Improvements:
-    - Performance Optimizations:
+        - Adopted a "session open price" strategy: the first price received for a stock during the application's current run is stored as `session_open_price` in ETS.
+        - This `session_open_price` is then used as `previous_close` in the data payloads.
+        - `daily_change_percent` is calculated as `((current_price - session_open_price) / session_open_price) * 100`.
+        - `FinnhubClient` now enriches the cached data and the broadcasted `stock_update` payload with these fields.
+        - `StockChannel` updated to map these new fields from cached data for the `initial_stocks` message.
+    - Aider Usage: Generated code modifications for `FinnhubClient` and `StockChannel` to implement the calculation and data transformation.
+    - opto-gpt Usage: Discussed strategies for handling `previous_close` and `daily_change_percent`.
+    - Learnings: Importance of clearly defining data contracts. Simple strategies can be effective for initial implementation.
+    - Code Quality Improvements: Data payload for frontend is now more comprehensive.
+    - Performance Optimizations: Calculation is done on write, which is efficient for many reads.
 
-- [ ] **Task 3.3**: Basic Frontend Component for Single Stock (AAPL)
-    - Completed: [ ] (Date/Time: __________)
-    - Challenges:
+- [x] **Task 3.3**: Basic Frontend Component for Single Stock (AAPL)
+    - Completed: [x] (Date/Time: 2025-05-10)
+    - Challenges: Integrating Svelte stores with the Phoenix Channel service, creating a reactive component.
     - Solutions:
-    - Aider Usage:
-    - opto-gpt Usage:
-    - Learnings:
-    - Code Quality Improvements:
-    - Performance Optimizations:
+        - Created `stockStore.js` with `stocks` and `connectionStatus` writables.
+        - Updated `phoenixSocket.js` to populate and update these stores based on `initial_stocks` and `stock_update` channel events. Implemented price history tracking.
+        - Created `StockCard.svelte` to display symbol and price.
+        - Modified `+page.svelte` to use `StockCard` for "AAPL", subscribing to data from `stockStore.js`.
+    - Aider Usage: Generated Svelte store structure, component skeleton, and updates for `phoenixSocket.js` and `+page.svelte`.
+    - opto-gpt Usage: Clarified Svelte store patterns and component prop handling.
+    - Learnings: Svelte store reactivity, component creation, and Phoenix Channel client-side event handling.
+    - Code Quality Improvements: Separation of concerns with a dedicated stock store.
+    - Performance Optimizations: N/A for this basic component.
+    - Aider Usage: Generated Svelte store structure, component skeleton, and updates for `phoenixSocket.js` and `+page.svelte`.
+    - opto-gpt Usage: Clarified Svelte store patterns and component prop handling.
+    - Learnings: Svelte store reactivity, component creation, and Phoenix Channel client-side event handling.
+    - Code Quality Improvements: Separation of concerns with a dedicated stock store.
+    - Performance Optimizations: N/A for this basic component.
 
-- [ ] **Task 3.4**: Expand to All Required Stocks
-    - Completed: [ ] (Date/Time: __________)
-    - Challenges:
+- [x] **Task 3.4**: Expand to All Required Stocks
+    - Completed: [x] (Date/Time: 2025-05-10)
+    - Challenges: Ensuring the frontend dynamically renders all stocks and the backend subscribes correctly.
     - Solutions:
-    - Aider Usage:
-    - opto-gpt Usage:
-    - Learnings:
-    - Code Quality Improvements:
-    - Performance Optimizations:
+        - Updated `@initial_stocks_to_subscribe` in `FinnhubClient` to include all 10 required symbols.
+        - Modified `+page.svelte` to iterate over the `$stocks` store (converted to a sorted array `stockList`) and render a `StockCard` for each. Added basic loading/empty states.
+    - Aider Usage: Provided the updated stock list for the backend and the Svelte loop for dynamic rendering.
+    - opto-gpt Usage: N/A.
+    - Learnings: Dynamic list rendering in Svelte using `#each`.
+    - Code Quality Improvements: Frontend now scales to multiple stocks.
+    - Performance Optimizations: Sorting stockList ensures consistent UI order.
 
 ### Milestone 4: Frontend Development (Est. Time: 8-10 hours)
 
