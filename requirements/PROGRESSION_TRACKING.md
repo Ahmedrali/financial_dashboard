@@ -174,15 +174,18 @@
 
 ### Milestone 4: Frontend Development (Est. Time: 8-10 hours)
 
-- [ ] **Task 4.1**: Build Dashboard UI Components
-    - Completed: [ ] (Date/Time: __________)
-    - Challenges:
+- [x] **Task 4.1**: Build Dashboard UI Components
+    - Completed: [x] (Date/Time: 2025-05-10)
+    - Challenges: Designing a clear and informative layout for each stock card.
     - Solutions:
-    - Aider Usage:
-    - opto-gpt Usage:
-    - Learnings:
-    - Code Quality Improvements:
-    - Performance Optimizations:
+        - Enhanced `StockCard.svelte` to display symbol, price, daily percentage change, previous close, and last updated timestamp.
+        - Implemented visual indicators for price movement (up/down arrows and color-coded left border) based on `daily_change_percent`.
+        - Added styling for better readability and visual appeal.
+    - Aider Usage: Generated Svelte code for displaying new data fields and conditional styling.
+    - opto-gpt Usage: Provided suggestions for CSS styling and layout.
+    - Learnings: Svelte conditional classes and dynamic styling.
+    - Code Quality Improvements: `StockCard` is now more feature-complete for displaying essential stock info.
+    - Performance Optimizations: N/A for this styling task.
 
 - [ ] **Task 4.2**: Implement Real-time Data Display for All Stocks
     - Completed: [ ] (Date/Time: __________)

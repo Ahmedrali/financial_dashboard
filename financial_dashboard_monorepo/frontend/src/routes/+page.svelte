@@ -86,8 +86,8 @@
     margin-top: 0;
   }
   .stock-cards-container {
-    display: flex;
-    flex-wrap: wrap;
+    display: grid; /* Changed to grid */
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); /* Responsive grid columns */
     gap: 1em;
   }
   pre {
