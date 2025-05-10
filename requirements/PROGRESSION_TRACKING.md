@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-- **Overall Progress**: 0%
+- **Overall Progress**: 15%
 - **Backend Test Coverage**: 0%
 - **Frontend Test Coverage**: 0%
 - **Documentation Completeness**: 0%
@@ -13,38 +13,38 @@
 
 ### Milestone 1: Project Setup (Est. Time: 4-6 hours)
 
-- [ ] **Task 1.1**: Initialize Monorepo Structure
-    - Completed: [ ] (Date/Time: __________)
-    - Challenges:
-    - Solutions:
-    - Aider Usage:
-    - opto-gpt Usage:
-    - Learnings:
-    - Code Quality Improvements:
-    - Performance Optimizations:
+- [x] **Task 1.1**: Initialize Monorepo Structure
+    - Completed: [x] (Date/Time: 2025-05-10)
+    - Challenges: Initial .gitignore might have been too generic.
+    - Solutions: Refined .gitignore based on typical Phoenix and Svelte project needs.
+    - Aider Usage: Generated initial directory structure commands and .gitignore content.
+    - opto-gpt Usage: N/A for this sub-task.
+    - Learnings: Importance of a good .gitignore from the start.
+    - Code Quality Improvements: N/A
+    - Performance Optimizations: N/A
 
-- [ ] **Task 1.2**: Set up Phoenix Backend
-    - Completed: [ ] (Date/Time: __________)
-    - Challenges:
-    - Solutions:
-    - Aider Usage:
-    - opto-gpt Usage:
-    - Learnings:
-    - Code Quality Improvements:
-    - Performance Optimizations:
+- [x] **Task 1.2**: Set up Phoenix Backend
+    - Completed: [x] (Date/Time: 2025-05-10)
+    - Challenges: Ensuring correct `mix phx.new` flags for a non-ecto, non-html, non-assets setup.
+    - Solutions: Used `mix phx.new dashboard --app dashboard --no-ecto --no-html --no-assets`.
+    - Aider Usage: Provided the `mix phx.new` command.
+    - opto-gpt Usage: N/A for this sub-task.
+    - Learnings: Phoenix project generation options.
+    - Code Quality Improvements: N/A
+    - Performance Optimizations: N/A
 
-- [ ] **Task 1.3**: Create Svelte Frontend
-    - Completed: [ ] (Date/Time: __________)
-    - Challenges:
-    - Solutions:
-    - Aider Usage:
-    - opto-gpt Usage:
-    - Learnings:
-    - Code Quality Improvements:
-    - Performance Optimizations:
+- [x] **Task 1.3**: Create Svelte Frontend
+    - Completed: [x] (Date/Time: 2025-05-10)
+    - Challenges: Selecting the correct Svelte template (Svelte core vs SvelteKit, though `svelte@latest` defaults to SvelteKit).
+    - Solutions: Used `npm create svelte@latest .` and selected "Svelte core" (or equivalent minimal SvelteKit setup).
+    - Aider Usage: Provided the `npm create svelte@latest` command.
+    - opto-gpt Usage: N/A for this sub-task.
+    - Learnings: Svelte project scaffolding.
+    - Code Quality Improvements: N/A
+    - Performance Optimizations: N/A
 
-- [ ] **Task 1.4**: Establish Basic Connectivity (Phoenix Channel)
-    - Completed: [ ] (Date/Time: __________)
+- [x] **Task 1.4**: Establish Basic Connectivity (Phoenix Channel)
+    - Completed: [x] (Date/Time: 2025-05-10)
     - Challenges:
     - Solutions:
     - Aider Usage:

@@ -9,6 +9,9 @@
 		"preview": "vite preview",
 		"prepare": "svelte-kit sync || echo ''"
 	},
+	"dependencies": {
+		"phoenix": "^1.7.11"
+	},
 	"devDependencies": {
 		"@sveltejs/adapter-auto": "^6.0.0",
 		"@sveltejs/kit": "^2.16.0",
