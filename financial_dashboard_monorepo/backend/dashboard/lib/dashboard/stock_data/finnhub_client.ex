@@ -9,7 +9,7 @@ defmodule Dashboard.StockData.FinnhubClient do
   alias Dashboard.StockData.Cache
 
   @finnhub_ws_url "wss://ws.finnhub.io"
-  @initial_stocks_to_subscribe ["BINANCE:BTCUSDT", "AAPL", "MSFT", "NVDA", "GOOGL", "JPM", "BAC", "V", "AMZN", "WMT", "MCD"] # Task 3.4
+  @initial_stocks_to_subscribe ["OANDA:EUR_USD", "OANDA:GBP_JPY", "OANDA:AUD_USD", "BINANCE:ETHUSDT", "BINANCE:BTCUSDT", "AAPL", "MSFT", "NVDA", "GOOGL", "JPM", "BAC", "V", "AMZN", "WMT", "MCD"] # Task 3.4
   @max_reconnect_attempts 10
   @base_reconnect_delay_ms 5_000 # Initial delay: 5 seconds
   @max_reconnect_delay_ms 60_000 # Max delay: 1 minute
@@ -193,7 +193,7 @@ defmodule Dashboard.StockData.FinnhubClient do
         :ok ->
           Logger.debug("Sent subscription for #{symbol}")
           # Increase delay to be more conservative, e.g., 1 second per subscription
-          Process.sleep(1000) # 1000ms = 1 second
+          Process.sleep(500) # 500ms = 0.5 second
         {:error, reason} -> Logger.error("Failed to send subscription for #{symbol}: #{inspect(reason)}")
       end
     end)

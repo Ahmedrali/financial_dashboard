@@ -197,25 +197,34 @@
     - Code Quality Improvements:
     - Performance Optimizations:
 
-- [ ] **Task 4.3**: Create Stock Charts
-    - Completed: [ ] (Date/Time: __________)
-    - Challenges:
+- [x] **Task 4.3**: Create Stock Charts
+    - Completed: [x] (Date/Time: 2025-05-10)
+    - Challenges: Integrating a charting library into Svelte, ensuring reactive updates, and making the chart look decent within the `StockCard`.
     - Solutions:
-    - Aider Usage:
-    - opto-gpt Usage:
-    - Learnings:
-    - Code Quality Improvements:
-    - Performance Optimizations:
+        - Used `chart.js` with `svelte-chartjs`.
+        - Created a `StockChart.svelte` component that takes `history` and `symbol` as props.
+        - The component uses a reactive statement (`$:`) to update `chartData` and `chartOptions` when props change.
+        - `StockCard.svelte` was updated to include `StockChart.svelte` and pass the `stock.history` and `stock.symbol`.
+        - Basic styling applied to `StockChart.svelte` for size and to hide unnecessary elements like x-axis labels and legend for a cleaner look in the card.
+    - Aider Usage: Generated the `StockChart.svelte` component structure, Chart.js configuration, and modifications to `StockCard.svelte`.
+    - opto-gpt Usage: Provided guidance on Chart.js options and Svelte component interaction.
+    - Learnings: Using `svelte-chartjs` for integrating Chart.js, configuring Chart.js options for a clean embedded chart, passing data reactively to child components.
+    - Code Quality Improvements: Encapsulation of chart logic into its own component.
+    - Performance Optimizations: Chart.js animations are kept brief. History length is managed in `phoenixSocket.js` (currently 50 points).
 
-- [ ] **Task 4.4**: Implement Portfolio Summary View
-    - Completed: [ ] (Date/Time: __________)
-    - Challenges:
+- [x] **Task 4.4**: Implement Portfolio Summary View
+    - Completed: [x] (Date/Time: 2025-05-10)
+    - Challenges: Calculating summary data reactively and displaying it.
     - Solutions:
-    - Aider Usage:
-    - opto-gpt Usage:
-    - Learnings:
-    - Code Quality Improvements:
-    - Performance Optimizations:
+        - Created `PortfolioSummary.svelte` component to display total portfolio value (sum of current prices, assuming 1 share each) and average daily percentage change.
+        - Added a Svelte `derived` store named `portfolioSummary` in `stockStore.js`. This store automatically recalculates summary data whenever the main `stocks` store changes.
+        - Imported and rendered `PortfolioSummary.svelte` in `+page.svelte`.
+        - The component handles cases where data might not be fully available yet (e.g., `stockCount` is 0).
+    - Aider Usage: Generated the `PortfolioSummary.svelte` component, the derived store logic in `stockStore.js`, and modifications to `+page.svelte`.
+    - opto-gpt Usage: Advised on using a Svelte derived store for reactive calculations.
+    - Learnings: Implementing Svelte derived stores for efficient, reactive data aggregation. Structuring summary components.
+    - Code Quality Improvements: Clear separation of summary logic into a derived store and its own component.
+    - Performance Optimizations: Derived stores compute values only when their dependencies change, which is efficient.
 
 - [ ] **Task 4.5**: Implement Loading States and Basic Error Display
     - Completed: [ ] (Date/Time: __________)

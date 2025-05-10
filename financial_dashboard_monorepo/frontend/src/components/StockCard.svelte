@@ -1,4 +1,6 @@
 <script>
+  import StockChart from './StockChart.svelte';
+
   export let stock = {
     symbol: 'N/A',
     price: 'N/A',
@@ -16,7 +18,7 @@
 <div class="stock-card" class:up={priceMovement === 'up'} class:down={priceMovement === 'down'} class:neutral={priceMovement === 'neutral'}>
   <div class="header">
     <h3>{stock.symbol}</h3>
-    <span class="movement-indicator">
+    <span class="movement-indicator {priceMovement}">
       {#if priceMovement === 'up'}▲
       {:else if priceMovement === 'down'}▼
       {:else}—
@@ -26,6 +28,7 @@
   <p class="price">${formattedPrice}</p>
   <p class="change {priceMovement}">Change: {formattedChange}</p>
   <p class="previous-close">Prev. Close: ${stock.previous_close ? stock.previous_close.toFixed(2) : 'N/A'}</p>
+  <StockChart history={stock.history} symbol={stock.symbol} />
   <p class="timestamp">Last updated: {stock.timestamp ? new Date(stock.timestamp).toLocaleTimeString() : 'N/A'}</p>
 </div>
 
@@ -33,14 +36,17 @@
   .stock-card {
     border: 1px solid #ccc;
     padding: 1em;
-    margin: 0.5em;
+    margin: 0;
     border-radius: 4px;
-    min-width: 220px; /* Minimum width */
-    max-width: 300px; /* Maximum width to prevent excessive stretching */
-    width: 100%; /* Allow it to fill grid cell, but max-width will cap it */
+    min-width: unset; /* Remove min-width restriction */
+    max-width: unset; /* Remove max-width restriction */
+    width: 100%; /* Allow card to fill the grid cell */
     background-color: #f9f9f9;
     transition: background-color 0.3s ease, border-color 0.3s ease;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+    height: 280px;
   }
   .header {
     display: flex;
@@ -91,13 +97,13 @@
     border-left: 5px solid #9E9E9E; /* Grey */
   }
 
-  .change.up .movement-indicator, .change.up {
+  .change.up {
     color: #4CAF50; /* Green */
   }
-  .change.down .movement-indicator, .change.down {
+  .change.down {
     color: #F44336; /* Red */
   }
-  .change.neutral .movement-indicator, .change.neutral {
+  .change.neutral {
     color: #333; /* Dark Grey for neutral text */
   }
   .movement-indicator.up { color: #4CAF50; }

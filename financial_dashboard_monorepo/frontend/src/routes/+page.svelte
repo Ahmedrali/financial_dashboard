@@ -2,8 +2,9 @@
   import { onMount, onDestroy } from 'svelte';
   import { connectToSocket, disconnectSocket, pingServer } from '$lib/phoenixSocket.js';
   // Import stores
-  import { connectionStatus, lastPong, stocks } from '../stores/stockStore.js';
-  import StockCard from '../components/StockCard.svelte'; // Import the new component
+  import { connectionStatus, lastPong, stocks, portfolioSummary } from '../stores/stockStore.js';
+  import StockCard from '../components/StockCard.svelte';
+  import PortfolioSummary from '../components/PortfolioSummary.svelte'; // Import the new summary component
 
   onMount(() => {
     connectToSocket();
@@ -34,6 +35,8 @@
       <button on:click={connectToSocket}>Reconnect</button>
     {/if}
   </section>
+
+  <PortfolioSummary />
 
   {#if $lastPong}
     <section class="debug-info">
@@ -86,9 +89,12 @@
     margin-top: 0;
   }
   .stock-cards-container {
-    display: grid; /* Changed to grid */
-    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); /* Responsive grid columns */
-    gap: 1em;
+    display: grid; 
+    grid-template-columns: repeat(3, 1fr); /* Exactly 3 cards per row */
+    gap: 3.5em; /* Increased spacing between cards */
+    padding: 0.5em; /* Added padding around the container */
+    width: 90%; /* Reduce the overall width to make cards less wide */
+    margin: 0 auto; /* Center the grid in the container */
   }
   pre {
     background-color: #f0f0f0;
