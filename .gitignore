@@ -1,1 +1,24 @@
 .aider*
+# Elixir/Phoenix backend
+backend/deps/
+backend/_build/
+backend/.elixir_ls/
+backend/cover/
+backend/priv/static/assets.* # If Phoenix serves static assets built elsewhere, adjust as needed
+
+# Svelte frontend
+frontend/node_modules/
+frontend/dist/
+frontend/build/ # Common for some Svelte setups, or public/build
+frontend/.svelte-kit/ # For SvelteKit
+frontend/.vite/
+
+# OS-specific
+.DS_Store
+Thumbs.db
+
+# IDE-specific
+.idea/
+.vscode/
+*.swp
+*.swo
