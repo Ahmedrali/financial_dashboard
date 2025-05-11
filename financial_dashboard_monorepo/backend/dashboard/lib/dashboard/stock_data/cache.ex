@@ -9,6 +9,11 @@ defmodule Dashboard.StockData.Cache do
   @table_name :stock_data_cache
 
   @doc """
+  Returns the name of the ETS table.
+  """
+  def table_name, do: @table_name
+
+  @doc """
   Initializes the ETS table.
   This should be called once when the application starts, typically by a supervisor.
   Returns `:ok` if the table is created, or `{:error, {:already_started, pid}}` if it already exists.
@@ -40,6 +45,7 @@ defmodule Dashboard.StockData.Cache do
   """
   def put(symbol, data) when is_binary(symbol) and is_map(data) do
     :ets.insert(@table_name, {symbol, data})
+    :ok
   end
 
   @doc """

@@ -239,14 +239,18 @@
 ### Milestone 5: Testing and Refinement (Est. Time: 7-9 hours)
 
 - [ ] **Task 5.1**: Add Backend Tests (Elixir)
-    - Completed: [ ] (Date/Time: __________)
-    - Challenges:
+    - Completed: [ ] (Date/Time: 2025-05-11) (Partially - Cache tests added)
+    - Challenges: Ensuring ETS table state is managed correctly between tests (creation/deletion). Capturing log messages for verification.
     - Solutions:
-    - Aider Usage:
-    - opto-gpt Usage:
-    - Learnings:
-    - Code Quality Improvements:
-    - Performance Optimizations:
+        - Added `Cache.table_name/0` helper to get the ETS table name consistently.
+        - Used `setup` blocks with `:ets.delete/1` to ensure a clean state for tests involving `Cache.init/0`.
+        - Used `setup` and `on_exit` for tests on data manipulation functions to ensure the table is initialized before and cleaned up after.
+        - Used `ExUnit.CaptureLog.capture_log/1` to verify warning messages.
+    - Aider Usage: Generated the `table_name/0` function, the `cache_test.exs` file structure and test cases, and updated this progression document.
+    - opto-gpt Usage: Provided guidance on ExUnit test structure, ETS table management in tests, and log capturing.
+    - Learnings: Best practices for testing modules that interact with named ETS tables, including setup and teardown. Using `ExUnit.CaptureLog`.
+    - Code Quality Improvements: Added initial suite of unit tests for `Dashboard.StockData.Cache`, improving code robustness and maintainability.
+    - Performance Optimizations: N/A for test code itself.
 
 - [ ] **Task 5.2**: Add Frontend Tests (Svelte)
     - Completed: [ ] (Date/Time: __________)
