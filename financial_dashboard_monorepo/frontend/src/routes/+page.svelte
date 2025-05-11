@@ -28,10 +28,19 @@
   
   <section class="connection-status">
     <h2>WebSocket Connection</h2>
-    <p>Status: {$connectionStatus}</p>
-    {#if $connectionStatus === 'connected'}
+    {#if $connectionStatus === 'connecting'}
+      <p>Status: Connecting to server...</p>
+    {:else if $connectionStatus === 'connected'}
+      <p>Status: Connected</p>
       <button on:click={handlePing}>Send Ping</button>
-    {:else if $connectionStatus === 'error' || $connectionStatus === 'closed' || $connectionStatus === 'disconnected'}
+    {:else if $connectionStatus === 'error'}
+      <p>Status: Connection error. Please try reconnecting.</p>
+      <button on:click={connectToSocket}>Reconnect</button>
+    {:else if $connectionStatus === 'closed'}
+      <p>Status: Connection closed. Please try reconnecting.</p>
+      <button on:click={connectToSocket}>Reconnect</button>
+    {:else if $connectionStatus === 'disconnected'}
+      <p>Status: Disconnected. Please try reconnecting.</p>
       <button on:click={connectToSocket}>Reconnect</button>
     {/if}
   </section>
@@ -51,14 +60,22 @@
       <!-- Display stock cards for all stocks -->
       {#if stockList.length > 0}
         {#each stockList as stock (stock.symbol)}
-          <StockCard stock={stock} />
+          <StockCard {stock} />
         {/each}
-      {:else if $connectionStatus === 'connected'}
-        <p>No stock data received yet. Waiting for updates...</p>
-      {:else if $connectionStatus === 'connecting'}
-        <p>Connecting to server to fetch stock data...</p>
       {:else}
-        <p>Not connected. Please check connection status.</p>
+        {#if $connectionStatus === 'connecting'}
+          <p>Connecting to server to fetch stock data...</p>
+        {:else if $connectionStatus === 'connected'}
+          <p>No stock data received yet. Waiting for updates...</p>
+        {:else if $connectionStatus === 'error'}
+          <p>Error fetching stock data. Please check the connection and try reconnecting.</p>
+        {:else if $connectionStatus === 'closed'}
+          <p>Connection closed. Unable to fetch stock data. Please try reconnecting.</p>
+        {:else if $connectionStatus === 'disconnected'}
+          <p>Disconnected. Please connect to see stock data.</p>
+        {:else}
+          <p>Not connected. Please check connection status.</p> <!-- Fallback for any unhandled status -->
+        {/if}
       {/if}
     </div>
   </section>
